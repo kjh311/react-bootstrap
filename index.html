@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>REACT BOOTSTRAP</title>
+    <script src="https://unpkg.com/react@latest/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+   <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" type="text/css" href="css/style.css">
+
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+    var Navbar = React.createClass({
+      change(page){
+        this.props.change(page);
+      },
+      render(){
+      return(
+        <nav className="navbar navbar-default">
+          <div className="container">
+            <div className="navbar-header">
+              <a className="navbar-brand" href="#">{this.props.brand} </a>
+            </div>
+            <div id="navbar">
+              <ul className="nav navbar-nav">
+                <li className={(this.props.currentPage === 'home') ? 'active': ''}><a onClick={this.change.bind(this,'home')} href="#">HOME</a></li>
+                <li className={(this.props.currentPage === 'about') ? 'active': ''}><a onClick={this.change.bind(this,'about')}  href="#">ABOUT</a></li>
+                <li className={(this.props.currentPage === 'contact') ? 'active': ''}><a onClick={this.change.bind(this,'contact')}  href="#">CONTACT</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      );
+      }
+    });
+
+    var Jumbotron = React.createClass({
+      render(){
+      return(
+        <div>
+          <div className="jumbotron">
+            <div className="container">
+              <h1>{this.props.heading}</h1>
+              <p className="lead">{this.props.text}</p>
+              <p><a href="#" className="btn btn-primary btn-lg" role="button">LEARN MORE</a></p>
+            </div>
+          </div>
+        </div>
+      );
+      }
+    });
+
+    var Page = React.createClass({
+      render(){
+      var pageContent;
+        if(this.props.currentPage == 'home'){
+          pageContent = 'This is the home page';
+        } else if(this.props.currentPage == 'about'){
+          pageContent = 'This is the about page';
+        } else if(this.props.currentPage == 'contact'){
+          pageContent = 'This is the contact page';
+        }
+      return(
+        <div>
+          <div className="container">
+          <h2>{this.props.currentPage.charAt(0).toUpperCase() + this.props.currentPage.slice(1)}</h2>
+            {pageContent}
+          </div>
+        </div>
+      );
+      }
+    });
+
+    var Theme = React.createClass({
+    handleChange(page){
+      this.setState({currentPage:page});
+    },
+      getInitialState(){
+        return{
+         currentPage:'home'
+        }
+      },
+      getDefaultProps(){
+        return {
+          brand:'REACT BOOTSTRAP',
+          heading:'Hello World!',
+          text:'This is a React tutorial with Bootstrap!'
+        }
+      },
+      render(){
+        var jumbotron;
+        if(this.state.currentPage == 'home'){
+          jumbotron = <Jumbotron heading={this.props.heading} text={this.props.text} />;
+        }else{
+          jumbotron = '';
+        }
+      return(
+        <div>
+          <Navbar currentPage={this.state.currentPage} brand={this.props.brand} change={this.handleChange} />
+          {jumbotron}
+          <Page currentPage={this.state.currentPage} />
+        </div>
+      );
+      }
+    });
+
+      ReactDOM.render(
+        <div>
+        <Theme />
+          
+
+        </div>,
+        document.getElementById('root')
+      );
+    </script>
+  </body>
+</html>
